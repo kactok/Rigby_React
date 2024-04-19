@@ -4,7 +4,7 @@ import { CartContext } from "../store/cart-context";
 
 export default function Meal({ data }) {
   const { addToCart } = useContext(CartContext);
-  const formattedPrice = new Intl.NumberFormat("us-US", {
+  const formattedPrice = new Intl.NumberFormat("en-EN", {
     style: "currency",
     currency: "EUR",
   }).format(data.price);
