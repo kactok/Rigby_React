@@ -7,7 +7,7 @@ import CartItem from "./CartItem";
 
 export default function Cart() {
   const { products, addToCart, removeFromCart } = useContext(CartContext);
-  const { progress, hideCart } = useContext(CartProgressContext);
+  const { progress, hideCart, showCheckout } = useContext(CartProgressContext);
   const totalPrice = products.items.reduce(
     (acc, item) => item.price * item.quantity + acc,
     0
@@ -19,7 +19,11 @@ export default function Cart() {
   }).format(totalPrice);
 
   return (
-    <Modal className="modal cart" open={progress === "cart"}>
+    <Modal
+      className="modal cart"
+      open={progress === "cart"}
+      onClose={progress === "cart" ? hideCart : null}
+    >
       <h2>Your Cart</h2>
       <ul>
         {products.items.map((item) => {
@@ -35,12 +39,21 @@ export default function Cart() {
           );
         })}
       </ul>
-      <p className="cart-total">{formattedPrice}</p>
+      {products.items.length > 0 ? (
+        <p className="cart-total">{formattedPrice}</p>
+      ) : (
+        <p className="cart-total">No items in the cart</p>
+      )}
+
       <p className="modal-actions">
         <Button className="text-button" onClick={hideCart}>
           Close
         </Button>
-        <Button className="button">Go to Checkout</Button>
+        {products.items.length > 0 && (
+          <Button className="button" onClick={showCheckout}>
+            Go to Checkout
+          </Button>
+        )}
       </p>
     </Modal>
   );

@@ -3,7 +3,7 @@ import useFetch from "../hooks/useFetch";
 import Meal from "./Meal";
 
 export default function Meals() {
-  const { fetchedData, isError, isFetching } = useFetch(fetchData, []);
+  const { fetchedData, isError, isFetching } = useFetch(fetchData, [], "GET");
   if (isFetching) {
     return <p className="meals-text">Please wait, fetching the data!</p>;
   }
