@@ -7,7 +7,7 @@ export const CartContext = createContext({
 });
 
 function cartReducer(state, action) {
-  const updatedItems = [...state.items];
+  let updatedItems = [...state.items];
   if (action.type === "ADD") {
     const indexOfItem = state.items.findIndex(
       (item) => item.id === action.payload.item.id
@@ -34,7 +34,11 @@ function cartReducer(state, action) {
             ? 0
             : state.items[indexOfItem].quantity - 1,
       };
-      updatedItems[indexOfItem] = updatedItem;
+      if (updatedItem.quantity === 0) {
+        updatedItems = updatedItems.filter((_, id) => id !== indexOfItem);
+      } else {
+        updatedItems[indexOfItem] = updatedItem;
+      }
     }
   }
   console.log(updatedItems);

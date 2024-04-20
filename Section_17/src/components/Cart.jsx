@@ -3,9 +3,10 @@ import { useContext } from "react";
 import { CartContext } from "../store/cart-context";
 import { CartProgressContext } from "../store/progress-context";
 import Button from "./Button";
+import CartItem from "./CartItem";
 
 export default function Cart() {
-  const { products } = useContext(CartContext);
+  const { products, addToCart, removeFromCart } = useContext(CartContext);
   const { progress, hideCart } = useContext(CartProgressContext);
   const totalPrice = products.items.reduce(
     (acc, item) => item.price * item.quantity + acc,
@@ -23,9 +24,14 @@ export default function Cart() {
       <ul>
         {products.items.map((item) => {
           return (
-            <li key={item.name + item.id}>
-              {item.name} - {item.quantity}
-            </li>
+            <CartItem
+              key={item.id}
+              name={item.name}
+              quantity={item.quantity}
+              price={item.price}
+              onDelete={() => removeFromCart(item.id)}
+              onAdd={() => addToCart(item)}
+            />
           );
         })}
       </ul>
